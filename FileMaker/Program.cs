@@ -23,11 +23,11 @@ namespace FileMaker
                 // Takes longer the bigger the file
                 Console.WriteLine("What is the size of the file in MB? (1-1000)");
                 var createSize = Console.ReadLine();
-                int cs = 0;
+                double cs = 0;
                 // check if it was a number
                 try
                 {
-                    cs = Int32.Parse(createSize);
+                    cs = double.Parse(createSize);
                 }
                 catch (Exception ex)
                 {
@@ -39,11 +39,11 @@ namespace FileMaker
                 var isFilled = Console.ReadLine();
                 if (isFilled.ToLower() == "y")
                 {
-                    tm.TextCreateByFilling(cs);
+                    tm.TextCreateByFilling(createSize);
                 }
                 else
                 {
-                    tm.TextCreateBySetLength(cs);
+                    tm.TextCreateBySetLength(createSize);
                 }
             }
             else if (createType.ToLower() == "pdf")

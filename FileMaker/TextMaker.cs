@@ -24,18 +24,20 @@ namespace FileMaker
         /// Creates a NON empty text
         /// </summary>
         /// <param name="maxFileSize"></param> in MB
-        public void TextCreateByFilling(int maxFileSize)
+        public void TextCreateByFilling(string maxFileSize)
         {
 
             try
             {
                 var resultByte = String.Empty;
+                var fileSize = ConvertToMb(maxFileSize);
+
                 // Create the file, or overwrite if the file exists.
                 using (FileStream fs = File.Create(Path + FileName))
                 {
-                    for (int i = 0; i < maxFileSize * ConvertToKb; i++)
+                    for (int i = 0; i < fileSize; i++)
                     {
-                        resultByte+= ByteList;
+                        resultByte += ByteList;
                     }
                     byte[] info = new UTF8Encoding(true).GetBytes(resultByte);
                     // Add some information to the file.                    
@@ -53,7 +55,7 @@ namespace FileMaker
         /// Creates Text that you dont care what is inside.
         /// </summary>
         /// <param name="setLength"></param> In MB
-        public void TextCreateBySetLength(int setLength)
+        public void TextCreateBySetLength(string setLength)
         {
 
             try
@@ -66,7 +68,7 @@ namespace FileMaker
                     // Add some information to the file.
                     fs.Write(info, 0, info.Length);
                     // Set length to anything but fills it with empty spaces
-                    fs.SetLength(setLength * 1024 * 1024);
+                    fs.SetLength(ConvertToMb(setLength) * 1024);
                 }
             }
 
@@ -76,6 +78,10 @@ namespace FileMaker
             }
         }
 
+        private int ConvertToMb (string fileLengthInput)
+        {
+            return (int)Math.Round(double.Parse(fileLengthInput) * ConvertToKb);
+        }
 
         // 1000 bytes
         private readonly string ByteList = "This is a test file.This is a test file that is written in c sharpwithThis is a test file that is written in c sharpwith. " +
